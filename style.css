@@ -5,9 +5,16 @@ i{
 li{
     padding: 10px;
 }
+#logo{
+    width: 100px;
+}
+nav{
+    font-style: bold;
+}
 
 header{
-    margin-left: 100px;
+    margin-top: 10px;
+    margin-left: 180px;
     width: 975px; 
     height: 325px; 
     background-image: url("/imagenes/header.jpg");
