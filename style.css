@@ -1,0 +1,14 @@
+i{
+    padding: 10px;
+}
+
+li{
+    padding: 10px;
+}
+
+header{
+    margin-left: 100px;
+    width: 975px; 
+    height: 325px; 
+    background-image: url("/imagenes/header.jpg");
+}
