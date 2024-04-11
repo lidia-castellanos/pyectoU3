@@ -1,5 +1,6 @@
 i{
     padding: 10px;
+    color: black;
 }
 
 li{
@@ -11,11 +12,23 @@ li{
 nav{
     font-style: bold;
 }
+input{
+    width: 1dvw;
+}
 
 header{
     margin-top: 10px;
     margin-left: 180px;
     width: 975px; 
     height: 325px; 
-    background-image: url("/imagenes/header.jpg");
+    background-image: url("imagenes/header.jpg");
 }
+
+.container{
+    float: right;
+    margin-left: 30dvw;
+    width: 60dvw;
+
+}
+
+
