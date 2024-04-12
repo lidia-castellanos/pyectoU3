@@ -1,8 +1,7 @@
 const filasTablas = document.getElementsByTagName("input");
 const filasIconos = document.getElementsByTagName("i");
-let numeroIcono=0;
-const mensaje = document.createElement("div");
-const memoria = JSON.parse(localStorage.getItem("usuarios"));
+let mensaje = document.createElement("div");
+let memoria = JSON.parse(localStorage.getItem("usuarios"));
 const usuarios = [];
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -65,9 +64,7 @@ function crearFormulario() {
 
 }
 
-function limpiar() {
 
-}
 
 function mostrarWarning() {
 
@@ -87,10 +84,10 @@ function mostrarExito() {
 
 }
 
-function encontrar(){
-    
-}
+
 function crear() {
+    var id = memoria[memoria.length - 1].id + 1;
+
     let nuevo = [];
     const nombre = document.getElementById("inputNombre").value.toUpperCase();
     const apellido = document.getElementById("inputApellido").value.toUpperCase();
@@ -100,7 +97,8 @@ function crear() {
 
 
 
-    nuevo = { id: 3, user: usuario, name: nombre, lastName: apellido, password: contrasena, userLvl: 1 };
+    nuevo = { id: id, user: usuario, name: nombre, lastName: apellido, password: contrasena, userLvl: 1 };
+    id++;
     const userExiste = memoria.find((item) => item.user === nuevo.user);
 
 
@@ -123,16 +121,31 @@ function crear() {
 
 function editar() {
 
-    numeroIcono = parseInt(event.currentTarget.id);
-   
+    let numeroIcono = parseInt(event.currentTarget.id);
 
-    for (let i = numeroIcono; i < numeroIcono + 3; i++) {
+
+    for (let i = numeroIcono - 1; i < numeroIcono + 2; i++) {
 
         filasTablas[i].disabled = false;
 
     }
 
 
+
+
+}
+function borrar() {
+
+    let numeroIcono = parseInt(event.currentTarget.id);
+    
+    
+    console.log(memoria[numeroIcono-4]);
+
+    memoria=memoria.splice(1,1);
+    memoria.push(memoria);
+    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+    
 }
 
 function generarListadoUsuarios() {
@@ -167,7 +180,7 @@ function generarListadoUsuarios() {
         memoria.forEach((item) => {
             const fila = document.createElement("tbody");
             fila.innerHTML = `
-        <td><a href="#"><i class="fa-solid fa-trash " ></a></i>
+        <td><a href="#"><i class="fa-solid fa-trash " onclick="borrar()" ></i></a>
         <a href="#"><i class="fa-solid fa-pencil"  onclick="editar()" ></i></a>
         <a href="#" ><i class="fa-solid fa-floppy-disk"></i></a></td>
 
@@ -185,9 +198,9 @@ function generarListadoUsuarios() {
 
 
         });
-        let n = 3;
+        let n = 2;
 
-        for (let i = 3; i < filasIconos.length; i++) {
+        for (let i = 2; i < filasIconos.length; i++) {
 
             filasIconos[i].id = "" + (n - i);
 
