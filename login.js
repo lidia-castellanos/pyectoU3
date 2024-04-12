@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
         memoria.forEach(element => {
            
             if(element.user===usuarioInput.value && element.password===passwordInput.value){
-               if(element.user==="admin"){
+               if(element.user==="ADMIN"){
                 window.open("admin.html");
                }else
                window.open("usuario.html")

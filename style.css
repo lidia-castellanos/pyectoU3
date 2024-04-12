@@ -5,6 +5,7 @@ body{
 i {
     padding: 10px;
     color: black;
+    
 }
 
 li {
@@ -68,11 +69,13 @@ h1{
     text-align: center;
 }
 .listados table{
-   
+    width: 70dvw;
     height: 3%;
     
     
 }
+
+
 
 .alert{
     text-align: center;
