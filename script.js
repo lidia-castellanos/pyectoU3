@@ -1,12 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
 
 
-    const usuarios = [{user:"admin",password: "12345",userLvl:1}];
-    
-    localStorage.setItem("usuarios",JSON.stringify(usuarios));
+    const usuarios = [{ id: 100, user: "ADMIN", name: "LIDIA", lastName: "CASTELLANOS", password: "12345", userLvl: 1 }];
 
-    const memoria=JSON.parse(localStorage.getItem("usuarios"));
+
+
+
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+   
+
+
+
+
+
+
     
+
+
+
 
 
 });
