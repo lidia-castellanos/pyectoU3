@@ -3,13 +3,14 @@ const filasIconos = document.getElementsByTagName("i");
 let mensaje = document.createElement("div");
 let memoria = JSON.parse(localStorage.getItem("usuarios"));
 const usuarios = [];
+const listadoId = [];
+const div = document.createElement("div");
 
 document.addEventListener("DOMContentLoaded", function () {
     generarListadoUsuarios();
 });
 
 function crearFormulario() {
-    const div = document.createElement("div");
     div.id = "divsd";
 
     const divPadre = document.getElementById("listado");
@@ -75,11 +76,11 @@ function mostrarWarning() {
 
 }
 
-function mostrarExito() {
-
+function mostrarExito(cadena) {
+    divPadre.appendChild(div);
     mensaje.classList.add("alert", "alert-success");
     mensaje.role = "alert";
-    mensaje.innerHTML = "Usuario añadido";
+    mensaje.innerHTML = "cadena";
     div.appendChild(mensaje);
 
 }
@@ -120,6 +121,7 @@ function crear() {
 }
 
 function editar() {
+    const nuevoValor=[];
 
     let numeroIcono = parseInt(event.currentTarget.id);
 
@@ -127,25 +129,41 @@ function editar() {
     for (let i = numeroIcono - 1; i < numeroIcono + 2; i++) {
 
         filasTablas[i].disabled = false;
-
+        console.log(filasTablas[i].value)
     }
 
 
+    
 
 
 }
 function borrar() {
-
+    let id=0;
     let numeroIcono = parseInt(event.currentTarget.id);
-    
-    
-    console.log(memoria[numeroIcono-4]);
 
-    memoria=memoria.splice(1,1);
-    memoria.push(memoria);
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+    let newMemoria = JSON.parse(localStorage.getItem("usuarios"));
+    if(numeroIcono==0)
+        id=numeroIcono;
+    else
+    id=numeroIcono-2;
+
+
+    let index=newMemoria.findIndex(element=> element.id===listadoId[numeroIcono-2]);
+    memoria.splice(index,1);
+    
 
     
+
+    // mostrarExito("Usuario eliminado");
+
+    localStorage.setItem("usuarios", JSON.stringify(memoria));
+    location.reload();
+    
+}
+function guardar(){
+    localStorage.setItem("usuarios" , JSON.stringify(memoria));
+    location.reload();
 }
 
 function generarListadoUsuarios() {
@@ -184,9 +202,9 @@ function generarListadoUsuarios() {
         <a href="#"><i class="fa-solid fa-pencil"  onclick="editar()" ></i></a>
         <a href="#" ><i class="fa-solid fa-floppy-disk"></i></a></td>
 
-
-        <td> ${item.id}</td>
-         
+        
+        <td id="id"> ${item.id}</td>
+         ${listadoId.push(item.id)}
         <td><input id="filaEdit" type="text" disabled value=${item.name}></td> 
         <td><input id="filaEdit" type="text" disabled value=${item.lastName}></td>
         <td><input id="filaEdit" type="text" disabled value=${item.user}></td>
