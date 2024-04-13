@@ -13,16 +13,23 @@ li {
 }
 
 #logo {
-    width: 100px;
+    width: 12dvw;
+    height: 250px;
+}
+[data-quantity] button.add {
+    right: .6rem;
+    background-position-x: -2.8rem;
 }
 
 nav {
+    height:20dvh;
     font-style: bold;
+    font-size: 1.5rem;
 }
 
 
 .card-body{
-    height: 45dvh;
+    height: 35dvh;
 }
 header img {
     margin-top: 10px;
@@ -75,6 +82,9 @@ h1{
     
 }
 
+.catalogo{
+    margin-top: 3%;
+}
 
 
 .alert{
@@ -90,5 +100,12 @@ h1{
     section{
         height:40dvh;
 
+    }
+    .card-body{
+        height: 25dvh;
+    }
+    body{
+        align-items: center;
+        width:99%;
     }
 }

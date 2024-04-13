@@ -8,6 +8,7 @@ const div = document.createElement("div");
 
 document.addEventListener("DOMContentLoaded", function () {
     generarListadoUsuarios();
+    const memoria = JSON.parse(localStorage.getItem("usuarios"));
 });
 
 function crearFormulario() {
@@ -121,7 +122,7 @@ function crear() {
 }
 
 function editar() {
-    const nuevoValor=[];
+    const nuevoValor = [];
 
     let numeroIcono = parseInt(event.currentTarget.id);
 
@@ -133,37 +134,45 @@ function editar() {
     }
 
 
-    
+
 
 
 }
-function borrar() {
-    let id=0;
+function guardar() {
     let numeroIcono = parseInt(event.currentTarget.id);
 
 
     let newMemoria = JSON.parse(localStorage.getItem("usuarios"));
-    if(numeroIcono==0)
-        id=numeroIcono;
-    else
-    id=numeroIcono-2;
+
+    let index = newMemoria.findIndex(element => element.id === listadoId[numeroIcono - 2]);
+
+    memoria.index(index).name = "hola";
+
+    localStorage.setItem("usuarios", JSON.stringify(memoria));
+    location.reload();
+
+}
+
+function borrar() {
+
+    let numeroIcono = parseInt(event.currentTarget.id);
 
 
-    let index=newMemoria.findIndex(element=> element.id===listadoId[numeroIcono-2]);
-    memoria.splice(index,1);
-    
+    let newMemoria = JSON.parse(localStorage.getItem("usuarios"));
 
-    
+
+
+    let index = newMemoria.findIndex(element => element.id === listadoId[numeroIcono - 2]);
+    memoria.splice(index, 1);
+
+
+
 
     // mostrarExito("Usuario eliminado");
 
     localStorage.setItem("usuarios", JSON.stringify(memoria));
     location.reload();
-    
-}
-function guardar(){
-    localStorage.setItem("usuarios" , JSON.stringify(memoria));
-    location.reload();
+
 }
 
 function generarListadoUsuarios() {
@@ -200,11 +209,11 @@ function generarListadoUsuarios() {
             fila.innerHTML = `
         <td><a href="#"><i class="fa-solid fa-trash " onclick="borrar()" ></i></a>
         <a href="#"><i class="fa-solid fa-pencil"  onclick="editar()" ></i></a>
-        <a href="#" ><i class="fa-solid fa-floppy-disk"></i></a></td>
+        <a href="#" ><i class="fa-solid fa-floppy-disk" onclick="guardar()"></i></a></td>
 
         
-        <td id="id"> ${item.id}</td>
-         ${listadoId.push(item.id)}
+         <td id="id"> ${item.id}</td>
+        
         <td><input id="filaEdit" type="text" disabled value=${item.name}></td> 
         <td><input id="filaEdit" type="text" disabled value=${item.lastName}></td>
         <td><input id="filaEdit" type="text" disabled value=${item.user}></td>
