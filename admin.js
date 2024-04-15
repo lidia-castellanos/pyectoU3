@@ -1,25 +1,102 @@
-const filasTablas = document.getElementsByTagName("input");
-const filasIconos = document.getElementsByTagName("i");
+const filasTablas = [document.getElementsByTagName("input")];
+
+const filasIconos = [document.getElementsByTagName("i")];
+const userTable = document.getElementById("usersTable");
 let mensaje = document.createElement("div");
-let memoria = JSON.parse(localStorage.getItem("usuarios"));
+let memoriaUsuarios = JSON.parse(localStorage.getItem("usuarios"));
+let memoriaCatalogo = JSON.parse(localStorage.getItem("catalogo"));
 const usuarios = [];
-const listadoId = [];
+let listadoId = [];
 const div = document.createElement("div");
 
+
 document.addEventListener("DOMContentLoaded", function () {
-    generarListadoUsuarios();
+
+
+    // generarListadoUsuarios();
     const memoria = JSON.parse(localStorage.getItem("usuarios"));
+
+    console.log(document.getElementsByTagName("div"));
+
+
+
+
+
+
+
 });
+
+
+function generarListadoCatalogo() {
+    const div = document.createElement("div");
+    div.id = "tablaCatalogo";
+
+    const divPadre = document.getElementById("listado");
+    const crearNuevo = document.getElementById("tablaCatalogo");
+
+
+    if (divPadre.contains(crearNuevo))
+
+        crearNuevo.remove();
+
+    if (!divPadre.contains(div)) {
+        div.innerHTML = `
+    
+    <table class="table" id="usersTable">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Accion</th>
+                <th scope="col">ID</th>
+                <th scope="col">ENLACE IMAGEN</th>
+                <th scope="col">MINIATURA</th>
+                <th scope="col">PRECIO</th>
+                <th scope="col">NOMBRE</th>
+            </tr>
+        </thead>
+    </table>
+    `;
+        divPadre.appendChild(div);
+        const catalogTable = document.getElementById("usersTable");
+        memoriaCatalogo.forEach((item) => {
+            const fila = document.createElement("tbody");
+            fila.innerHTML = `
+        <td><a href="#"><i class="fa-solid fa-trash"  id="${item.id}" onclick="borrar()" ></i></a>
+        <a href="#"><i class="fa-solid fa-pencil"  onclick="editar()" id="${item.id}"></i></a>
+        <a href="#" ><i class="fa-solid fa-floppy-disk" id="${item.id}" onclick="guardar()" ></i> </a>
+        </td>
+
+        
+        <td id="id" >${item.id}</td>
+        
+        <td><input id="${item.id}" type="text" disabled value=${item.imagen}></td> 
+        <td><img src="${item.imagen}" style=width:100px></td> 
+        <td><input id="${item.id}" type="text" disabled value=${item.precio}></td>
+        <td><input id="${item.id}" type="text" disabled value=${item.nombre}></td>
+         
+        `;
+
+            // fila.id = "filasTablas";
+            catalogTable.appendChild(fila);
+
+
+        });
+
+    }
+}
+
 
 function crearFormulario() {
     div.id = "divsd";
 
     const divPadre = document.getElementById("listado");
     const tablaUsuarios = document.getElementById("tablaUsuarios");
+    const tablaCatalogo = document.getElementById("tablaCatalogo");
+
 
     if (divPadre.contains(tablaUsuarios))
 
         tablaUsuarios.remove();
+
 
 
     if (!divPadre.contains(document.getElementById("divsd"))) {
@@ -66,7 +143,52 @@ function crearFormulario() {
 
 }
 
+function crearFormularioArticulo() {
+    div.id = "divsd";
 
+    const divPadre = document.getElementById("listado");
+    const tablaUsuarios = document.getElementById("tablaUsuarios");
+    const tablaCatalogo = document.getElementById("tablaCatalogo");
+
+
+    if (divPadre.contains(tablaUsuarios))
+
+        tablaUsuarios.remove();
+
+
+
+    if (!divPadre.contains(document.getElementById("divsd"))) {
+        div.innerHTML = `
+    <form>
+  <div class="form-row">
+
+    <div class="form-group col-md-6">
+      <label for="inputNombre">Nombre</label>
+      <input type="text" class="form-control" id="inputNombre">
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="inputPassword4">Enlace Imagen</label>
+      <input type="text" class="form-control" id="inputEnlace" >
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputUsuario">Precio</label>
+      <input type="number" class="form-control" id="inputPrecio" >
+    </div>
+
+   
+  </div>
+
+</div>
+  
+  <button type="submit" class="btn btn-primary" onClick="crearArticulo()">Crear</button>
+  <button type="submit" class="btn btn-primary" onClick="limpiar()">Nuevo</button>
+</form>
+    `;
+        divPadre.appendChild(div);
+    }
+
+}
 
 function mostrarWarning() {
 
@@ -85,10 +207,29 @@ function mostrarExito(cadena) {
     div.appendChild(mensaje);
 
 }
+function crearArticulo() {
+    var id = memoriaCatalogo[memoriaCatalogo.length - 1].id + 1;
 
+    let nuevo = [];
+    const nombre = document.getElementById("inputNombre").value;
+    const enlace = document.getElementById("inputEnlace").value;
+    const precio = document.getElementById("inputPrecio").value;
+   
+    nuevo = { id: id, imagen:enlace,nombre: nombre, precio:precio};
+    id++;
+    const userExiste = memoriaCatalogo.find((item) => item.enalce === nuevo.user);
+
+    memoriaCatalogo.push(nuevo);
+
+  
+
+
+    localStorage.setItem("catalogo", JSON.stringify(memoriaCatalogo));
+
+}
 
 function crear() {
-    var id = memoria[memoria.length - 1].id + 1;
+    var id = memoriaUsuarios[memoriaUsuarios.length - 1].id + 1;
 
     let nuevo = [];
     const nombre = document.getElementById("inputNombre").value.toUpperCase();
@@ -101,7 +242,7 @@ function crear() {
 
     nuevo = { id: id, user: usuario, name: nombre, lastName: apellido, password: contrasena, userLvl: 1 };
     id++;
-    const userExiste = memoria.find((item) => item.user === nuevo.user);
+    const userExiste = memoriaUsuarios.find((item) => item.user === nuevo.user);
 
 
 
@@ -110,68 +251,118 @@ function crear() {
     }
 
     else {
-        memoria.push(nuevo);
+        memoriaCatalogo.push(nuevo);
         // mostrarExito();
 
     }
 
 
-    localStorage.setItem("usuarios", JSON.stringify(memoria));
+    localStorage.setItem("catalogo", JSON.stringify(memoriaCatalogo));
 
 
 }
 
-function editar() {
-    const nuevoValor = [];
-
+function buscarIdIcono() {
+    const newMemoria = memoriaUsuarios;
     let numeroIcono = parseInt(event.currentTarget.id);
+    // console.log(numeroIcono);
 
 
-    for (let i = numeroIcono - 1; i < numeroIcono + 2; i++) {
-
-        filasTablas[i].disabled = false;
-        console.log(filasTablas[i].value)
-    }
+    return numeroIcono;
+}
+function enableInput(id, condicion) {
 
 
 
 
+    const table = document.getElementById("usersTable");
+
+    const fila = table.querySelectorAll("input");
+
+
+
+
+    fila.forEach(element => {
+
+        if (element.id == id) {
+
+            element.disabled = condicion;
+
+        }
+
+    });
 
 }
+
 function guardar() {
-    let numeroIcono = parseInt(event.currentTarget.id);
+
+    let numeroIcono = buscarIdIcono();
+    enableInput(numeroIcono, true);
+
+    let index = memoriaUsuarios.findIndex(element => element.id === numeroIcono);
 
 
-    let newMemoria = JSON.parse(localStorage.getItem("usuarios"));
 
-    let index = newMemoria.findIndex(element => element.id === listadoId[numeroIcono - 2]);
+    const table = document.getElementById("usersTable");
 
-    memoria.index(index).name = "hola";
+    const fila = table.querySelectorAll("input");
 
-    localStorage.setItem("usuarios", JSON.stringify(memoria));
-    location.reload();
+    const userValuesArray = [];
+
+
+
+    fila.forEach(element => {
+
+
+        if (element.id == numeroIcono) {
+            userValuesArray.push(element.value);
+
+        }
+
+    });
+
+    memoriaUsuarios[index].user = userValuesArray[1];
+    memoriaUsuarios[index].name = userValuesArray[0];
+    memoriaUsuarios[index].lastName = userValuesArray[2];
+    localStorage.setItem("usuarios", JSON.stringify(memoriaUsuarios));
+
+    generarListadoUsuarios();
+
 
 }
+function editar() {
+
+
+
+    let numeroIcono = buscarIdIcono();
+
+
+
+    enableInput(numeroIcono, false);
+
+
+}
+
 
 function borrar() {
 
+
     let numeroIcono = parseInt(event.currentTarget.id);
+
 
 
     let newMemoria = JSON.parse(localStorage.getItem("usuarios"));
 
 
 
-    let index = newMemoria.findIndex(element => element.id === listadoId[numeroIcono - 2]);
-    memoria.splice(index, 1);
+    let index = newMemoria.findIndex(element => element.id === listadoId[(numeroIcono - 2)]);
 
 
+    memoriaUsuarios.splice(index, 1);
 
+    localStorage.setItem("usuarios", JSON.stringify(memoriaUsuarios));
 
-    // mostrarExito("Usuario eliminado");
-
-    localStorage.setItem("usuarios", JSON.stringify(memoria));
-    location.reload();
+    generarListadoUsuarios();
 
 }
 
@@ -204,34 +395,28 @@ function generarListadoUsuarios() {
     `;
         divPadre.appendChild(div);
         const userTable = document.getElementById("usersTable");
-        memoria.forEach((item) => {
+        memoriaUsuarios.forEach((item) => {
             const fila = document.createElement("tbody");
             fila.innerHTML = `
-        <td><a href="#"><i class="fa-solid fa-trash " onclick="borrar()" ></i></a>
-        <a href="#"><i class="fa-solid fa-pencil"  onclick="editar()" ></i></a>
-        <a href="#" ><i class="fa-solid fa-floppy-disk" onclick="guardar()"></i></a></td>
+        <td><a href="#"><i class="fa-solid fa-trash"  id="${item.id}" onclick="borrar()" ></i></a>
+        <a href="#"><i class="fa-solid fa-pencil"  onclick="editar()" id="${item.id}"></i></a>
+        <a href="#" ><i class="fa-solid fa-floppy-disk" id="${item.id}" onclick="guardar()" ></i> </a>
+        </td>
 
         
-         <td id="id"> ${item.id}</td>
-        
-        <td><input id="filaEdit" type="text" disabled value=${item.name}></td> 
-        <td><input id="filaEdit" type="text" disabled value=${item.lastName}></td>
-        <td><input id="filaEdit" type="text" disabled value=${item.user}></td>
+        <td id="id" >${item.id}</td>
+         
+        <td><input id="${item.id}" type="text" disabled value=${item.name}></td> 
+        <td><input id="${item.id}" type="text" disabled value=${item.lastName}></td>
+        <td><input id="${item.id}" type="text" disabled value=${item.user}></td>
          
         `;
 
-            fila.id = "filasTablas"
+            // fila.id = "filasTablas";
             userTable.appendChild(fila);
 
 
         });
-        let n = 2;
 
-        for (let i = 2; i < filasIconos.length; i++) {
-
-            filasIconos[i].id = "" + (n - i);
-
-            n += 2;
-        }
     }
 }
