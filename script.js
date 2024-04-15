@@ -1,3 +1,5 @@
+const carrito = [];
+
 document.addEventListener("DOMContentLoaded", function () {
 
     const memoria = JSON.parse(localStorage.getItem("usuarios"));
@@ -74,6 +76,40 @@ function cargarCatalogo() {
     });
 
 
+
+    function agregarProductoAlCarrito(producto, cantidad) {
+        // Busca si el producto ya está en el carrito
+        const productoEnCarrito = carrito.find((item) => item.producto.id === producto.id);
+        if (productoEnCarrito) {
+            // Si ya está en el carrito, actualiza la cantidad
+            productoEnCarrito.cantidad += cantidad;
+
+        } else {
+
+            // Si no está en el carrito, agrega un nuevo elemento al carrito
+            carrito.push({ producto, cantidad, totalArticulos });
+
+
+
+        }
+
+        carrito.forEach((item) => {
+
+
+
+            subtotalTotal += item.producto.precio * item.cantidad;
+    
+    
+        });
+        console.log(carrito);
+    
+    
+    
+        const botonComprar = document.getElementById("finalizarCompra");
+    
+    
+        localStorage.setItem("compras", JSON.stringify(carrito));
+    }
 
 
 

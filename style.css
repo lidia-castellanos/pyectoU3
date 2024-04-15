@@ -7,6 +7,17 @@ i {
     color: black;
     
 }
+.container h5{
+    margin-top: 10%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#btnCarrito{
+   
+   
+    margin-left: auto;
+    margin-right: auto;
+}
 
 li {
     padding: 10px;
