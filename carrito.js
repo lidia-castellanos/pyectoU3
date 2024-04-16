@@ -25,9 +25,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     else {
         const carritoLleno = document.createElement("div");
+        carritoLleno.classList="";
         carritoLleno.innerHTML =
             `
-        <table class="table w-25" id="tabla">
+        <table class="table" id="tabla">
         <thead>
           <tr>
             <th scope="col">Producto</th>
@@ -78,9 +79,10 @@ document.addEventListener("DOMContentLoaded", function () {
         tablaCarrito.appendChild(pieTabla);
 
         const tablaTotal = document.createElement("div");
+        tablaTotal.classList="";
         tablaTotal.innerHTML =
             `
-        <table class="table" id="tablaTotal">
+        <table class="table " id="tablaTotal">
         <thead> 
           <tr>
             <th scope="col">Total en carrito</th>
@@ -102,16 +104,25 @@ document.addEventListener("DOMContentLoaded", function () {
         const tablaTotalFilas = document.getElementById("tablaTotal");
         const fila = document.createElement("tbody");
         fila.innerHTML = `
-            
+            <tr>
             
             <td> Subtotal </td>
-            <td> d </td>
+            <td> ${total} </td>
             </tr>
 
+            <tr>
+            
+            <td> Envio </td>
+            <td> GRATIS </td>
+            </tr>
+
+            <tfoot>
+            <button class="btn btn-outline-secondary">Finalizar Compra</button>
+            </tfoot>
 
             `;
         
-        bodyTablaTotal.appendChild(fila);
+        tablaTotalFilas.appendChild(fila);
 
 
 

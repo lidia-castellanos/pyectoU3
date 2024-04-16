@@ -124,8 +124,8 @@ function crearFormulario() {
   </div>
 
   <div class="form-group col-md-6">
-    <input class="form-check-input" type="checkbox" id="gridCheck">
-      <label class="form-check-label" for="gridCheck">
+    <input class="form-check-input" type="checkbox" id="lvladmin">
+      <label class="form-check-label" for="gridCheck" >
         Admin
       </label>
   </div>
@@ -214,14 +214,14 @@ function crearArticulo() {
     const nombre = document.getElementById("inputNombre").value;
     const enlace = document.getElementById("inputEnlace").value;
     const precio = document.getElementById("inputPrecio").value;
-   
-    nuevo = { id: id, imagen:enlace,nombre: nombre, precio:precio};
+
+    nuevo = { id: id, imagen: enlace, nombre: nombre, precio: precio };
     id++;
     const userExiste = memoriaCatalogo.find((item) => item.enalce === nuevo.user);
 
     memoriaCatalogo.push(nuevo);
 
-  
+
 
 
     localStorage.setItem("catalogo", JSON.stringify(memoriaCatalogo));
@@ -230,34 +230,35 @@ function crearArticulo() {
 
 function crear() {
     var id = memoriaUsuarios[memoriaUsuarios.length - 1].id + 1;
-
+    let admin=false;
     let nuevo = [];
-    const nombre = document.getElementById("inputNombre").value.toUpperCase();
-    const apellido = document.getElementById("inputApellido").value.toUpperCase();
-    const usuario = document.getElementById("inputUsuario").value.toUpperCase();
-    const contrasena = document.getElementById("inputContraseña").value.toUpperCase();
+    const nombre = document.getElementById("inputNombre").value;
+    const apellido = document.getElementById("inputApellido").value;
+    const usuario = document.getElementById("inputUsuario").value;
+    const contrasena = document.getElementById("inputContraseña").value;
+    const lvl = document.getElementById("lvl");
+
+    if (admin.checked==true)
+    admin=true;
 
 
-
-
-    nuevo = { id: id, user: usuario, name: nombre, lastName: apellido, password: contrasena, userLvl: 1 };
+    nuevo = { id: id, user: usuario, name: nombre, lastName: apellido, password: contrasena, admin: admin };
     id++;
     const userExiste = memoriaUsuarios.find((item) => item.user === nuevo.user);
 
 
 
-    if (userExiste) {
-        // mostrarWarning();
-    }
+    // if (userExiste) {
+    //     // mostrarWarning();
+    // }
 
-    else {
-        memoriaCatalogo.push(nuevo);
+    // else {
+        memoriaUsuarios.push(nuevo);
         // mostrarExito();
 
-    }
+    // }
 
-
-    localStorage.setItem("catalogo", JSON.stringify(memoriaCatalogo));
+    localStorage.setItem("usuarios", JSON.stringify(memoriaUsuarios));
 
 
 }
@@ -265,7 +266,7 @@ function crear() {
 function buscarIdIcono() {
     const newMemoria = memoriaUsuarios;
     let numeroIcono = parseInt(event.currentTarget.id);
-    // console.log(numeroIcono);
+    
 
 
     return numeroIcono;
@@ -386,6 +387,7 @@ function generarListadoUsuarios() {
             <tr>
                 <th scope="col">Accion</th>
                 <th scope="col">ID</th>
+                <th scope="col">ADMIN</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Apellido</th>
                 <th scope="col">Usuario</th>
@@ -394,8 +396,11 @@ function generarListadoUsuarios() {
     </table>
     `;
         divPadre.appendChild(div);
+        
         const userTable = document.getElementById("usersTable");
+        const checkbox=userTable.querySelectorAll("input");
         memoriaUsuarios.forEach((item) => {
+            console.log(item.admin);
             const fila = document.createElement("tbody");
             fila.innerHTML = `
         <td><a href="#"><i class="fa-solid fa-trash"  id="${item.id}" onclick="borrar()" ></i></a>
@@ -405,14 +410,14 @@ function generarListadoUsuarios() {
 
         
         <td id="id" >${item.id}</td>
-         
+        <td><input id="${item.id}" type="checkBox" checked="${item.admin}" disabled></input></td>
         <td><input id="${item.id}" type="text" disabled value=${item.name}></td> 
         <td><input id="${item.id}" type="text" disabled value=${item.lastName}></td>
         <td><input id="${item.id}" type="text" disabled value=${item.user}></td>
          
         `;
-
-            // fila.id = "filasTablas";
+            
+            
             userTable.appendChild(fila);
 
 

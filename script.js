@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const memoria = JSON.parse(localStorage.getItem("usuarios"));
 
-    const usuarios = [{ id: 100, user: "ADMIN", name: "LIDIA", lastName: "CASTELLANOS", password: "12345", permisos: "admin" }];
+    const usuarios = [{ id: 100, user: "ADMIN", name: "LIDIA", lastName: "CASTELLANOS", password: "12345",admin:true }];
 
 
 
