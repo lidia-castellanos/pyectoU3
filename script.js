@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
 let subtotalTotal = 0;
 
 function cargarCatalogo() {
-
     const catalogo = [
         { id: 1, imagen: "https://images.pexels.com/photos/5501282/pexels-photo-5501282.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", precio: 600, nombre: "Centro de mesa elegante" },
         { id: 2, imagen: "https://images.pexels.com/photos/1563650/pexels-photo-1563650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", precio: 400, nombre: "Centro de mesa sencillo" },
