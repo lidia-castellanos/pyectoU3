@@ -85,7 +85,9 @@ form input {
     margin-right: auto;
 
 }
-
+#mensaje{
+    background-color: aqua;
+}
 section {
     height: 35dvh;
 

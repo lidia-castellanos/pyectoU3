@@ -8,12 +8,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     
     acceder.addEventListener("click", function () {
-        const memoria = JSON.parse(localStorage.getItem("usuarios"));
+        const memoriaUsuarios = JSON.parse(localStorage.getItem("usuarios"));
 
-        memoria.forEach(element => {
+        memoriaUsuarios.forEach(element => {
            
             if(element.user===usuarioInput.value && element.password===passwordInput.value){
-               if(element.user==="ADMIN"){
+               if(element.admin==true){
                 window.open("admin.html");
                }else
                window.open("usuario.html")

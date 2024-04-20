@@ -1,22 +1,23 @@
 const filasTablas = [document.getElementsByTagName("input")];
-
+let contadorAdmins = 0;
 const filasIconos = [document.getElementsByTagName("i")];
 const userTable = document.getElementById("usersTable");
-let mensaje = document.createElement("div");
 let memoriaUsuarios = JSON.parse(localStorage.getItem("usuarios"));
 let memoriaCatalogo = JSON.parse(localStorage.getItem("catalogo"));
 const usuarios = [];
-let listadoId = [];
 const div = document.createElement("div");
+const mensaje = document.createElement("div");
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
 
 
+
     // generarListadoUsuarios();
     const memoria = JSON.parse(localStorage.getItem("usuarios"));
 
-    console.log(document.getElementsByTagName("div"));
 
 
 
@@ -41,9 +42,11 @@ function generarListadoCatalogo() {
 
     if (!divPadre.contains(div)) {
         div.innerHTML = `
-    
+        
     <table class="table" id="usersTable">
+    
         <thead class="thead-dark">
+        
             <tr>
                 <th scope="col">Accion</th>
                 <th scope="col">ID</th>
@@ -101,7 +104,7 @@ function crearFormulario() {
 
     if (!divPadre.contains(document.getElementById("divsd"))) {
         div.innerHTML = `
-    <form>
+    <form id="formularioUser">
   <div class="form-row">
 
     <div class="form-group col-md-6">
@@ -124,10 +127,8 @@ function crearFormulario() {
   </div>
 
   <div class="form-group col-md-6">
-    <input class="form-check-input" type="checkbox" id="lvladmin">
-      <label class="form-check-label" for="gridCheck" >
-        Admin
-      </label>
+    <input class="form-check-input" type="checkbox" id="lvladmin">Admin
+
   </div>
 
 </div>
@@ -137,6 +138,7 @@ function crearFormulario() {
 </form>
     `;
         divPadre.appendChild(div);
+
     }
 
 
@@ -159,7 +161,7 @@ function crearFormularioArticulo() {
 
     if (!divPadre.contains(document.getElementById("divsd"))) {
         div.innerHTML = `
-    <form>
+    <form id="formNuevoArt">
   <div class="form-row">
 
     <div class="form-group col-md-6">
@@ -189,24 +191,42 @@ function crearFormularioArticulo() {
     }
 
 }
+function limpiar() {
+    mostrarMensajeFormUsuario("", "");
+    lvladmin = document.getElementById("lvladmin");
 
-function mostrarWarning() {
+    inputContraseña = document.getElementById("inputContraseña");
+    inputApellido = document.getElementById("inputApellido");
+    inputUsuario = document.getElementById("inputUsuario");
+    inputNombre = document.getElementById("inputNombre");
 
-    mensaje.classList.add("alert", "alert-warning");
+    inputContraseña.value = "";
+    inputApellido.value = "";
+    inputNombre.value = "";
+    inputUsuario.value = "";
+
+    lvladmin.checked = false;
+
+
+
+
+}
+function mostrarMensajeFormUsuario(alerta, cadena) {
     mensaje.role = "alert";
-    mensaje.innerHTML = "Usuario ya existe en sistema";
+    mensaje.classList = alerta;
+
+    mensaje.innerHTML = cadena;
+
+
+
     div.appendChild(mensaje);
+
+
 
 }
 
-function mostrarExito(cadena) {
-    divPadre.appendChild(div);
-    mensaje.classList.add("alert", "alert-success");
-    mensaje.role = "alert";
-    mensaje.innerHTML = "cadena";
-    div.appendChild(mensaje);
 
-}
+
 function crearArticulo() {
     var id = memoriaCatalogo[memoriaCatalogo.length - 1].id + 1;
 
@@ -229,34 +249,44 @@ function crearArticulo() {
 }
 
 function crear() {
-    var id = memoriaUsuarios[memoriaUsuarios.length - 1].id + 1;
-    let admin=false;
+
+
+
+    let admin = false;
     let nuevo = [];
     const nombre = document.getElementById("inputNombre").value;
     const apellido = document.getElementById("inputApellido").value;
     const usuario = document.getElementById("inputUsuario").value;
     const contrasena = document.getElementById("inputContraseña").value;
-    const lvl = document.getElementById("lvl");
+    const lvl = document.getElementById("lvladmin");
+    var id = 0;
 
-    if (admin.checked==true)
-    admin=true;
+    if (lvl.checked == true) {
+        admin = true;
+    }
+    if (memoriaUsuarios.length == 0) {
+        id = 100;
+    } else
+        memoriaUsuarios[memoriaUsuarios.length - 1].id + 1
+
+
 
 
     nuevo = { id: id, user: usuario, name: nombre, lastName: apellido, password: contrasena, admin: admin };
     id++;
-    const userExiste = memoriaUsuarios.find((item) => item.user === nuevo.user);
+    const userExiste = memoriaUsuarios.find((item) => item.user === usuario);
 
 
 
-    // if (userExiste) {
-    //     // mostrarWarning();
-    // }
+    if (userExiste) {
 
-    // else {
+        mostrarMensajeFormUsuario("alert alert-warning", "Usuario ya existe");
+    }
+
+    else {
         memoriaUsuarios.push(nuevo);
-        // mostrarExito();
-
-    // }
+        mostrarMensajeFormUsuario("alert alert-success", "Usuario agregado con éxito");
+    }
 
     localStorage.setItem("usuarios", JSON.stringify(memoriaUsuarios));
 
@@ -266,7 +296,7 @@ function crear() {
 function buscarIdIcono() {
     const newMemoria = memoriaUsuarios;
     let numeroIcono = parseInt(event.currentTarget.id);
-    
+
 
 
     return numeroIcono;
@@ -298,7 +328,7 @@ function enableInput(id, condicion) {
 function guardar() {
 
     let numeroIcono = buscarIdIcono();
-    enableInput(numeroIcono, true);
+
 
     let index = memoriaUsuarios.findIndex(element => element.id === numeroIcono);
 
@@ -316,18 +346,28 @@ function guardar() {
 
 
         if (element.id == numeroIcono) {
-            userValuesArray.push(element.value);
+
+            if (element.type === "checkbox")
+                userValuesArray.push(element.checked);
+
+            else
+                userValuesArray.push(element.value);
+
 
         }
 
     });
-
-    memoriaUsuarios[index].user = userValuesArray[1];
-    memoriaUsuarios[index].name = userValuesArray[0];
+    memoriaUsuarios[index].admin = userValuesArray[0];
+    memoriaUsuarios[index].name = userValuesArray[1];
     memoriaUsuarios[index].lastName = userValuesArray[2];
+    memoriaUsuarios[index].user = userValuesArray[3];
+    console.log(userValuesArray[1]);
+
+
+    enableInput(numeroIcono, true);
     localStorage.setItem("usuarios", JSON.stringify(memoriaUsuarios));
 
-    generarListadoUsuarios();
+
 
 
 }
@@ -346,9 +386,9 @@ function editar() {
 
 
 function borrar() {
+    const divPadre = document.getElementById("mensajes");
 
-
-    let numeroIcono = parseInt(event.currentTarget.id);
+    let numeroIcono = buscarIdIcono();
 
 
 
@@ -356,18 +396,35 @@ function borrar() {
 
 
 
-    let index = newMemoria.findIndex(element => element.id === listadoId[(numeroIcono - 2)]);
+    let index = newMemoria.findIndex(element => element.id === numeroIcono);
+
+    if (memoriaUsuarios[index].admin == true && contadorAdmins == 1) {
+        mostrarMensajeFormUsuario("alert alert-warning", "Designa un usuario como admin antes de eliminar");
+
+    }
+    else {
+        if (memoriaUsuarios[index].admin === true)
+            contadorAdmins--;
+
+        memoriaUsuarios.splice(index, 1);
+        mostrarMensajeFormUsuario("alert alert-success", "Usuario eliminado");
+
+    }
 
 
-    memoriaUsuarios.splice(index, 1);
+    divPadre.appendChild(mensaje);
 
     localStorage.setItem("usuarios", JSON.stringify(memoriaUsuarios));
 
-    generarListadoUsuarios();
+
+
+    // generarListadoUsuarios();
+
 
 }
 
 function generarListadoUsuarios() {
+
     const div = document.createElement("div");
     div.id = "tablaUsuarios";
 
@@ -396,11 +453,19 @@ function generarListadoUsuarios() {
     </table>
     `;
         divPadre.appendChild(div);
-        
+
         const userTable = document.getElementById("usersTable");
-        const checkbox=userTable.querySelectorAll("input");
+        const checkbox = userTable.querySelectorAll("input");
         memoriaUsuarios.forEach((item) => {
-            console.log(item.admin);
+            let checked = "";
+
+
+            if (item.admin == true) {
+                checked = "checked";
+                contadorAdmins++;
+            }
+
+
             const fila = document.createElement("tbody");
             fila.innerHTML = `
         <td><a href="#"><i class="fa-solid fa-trash"  id="${item.id}" onclick="borrar()" ></i></a>
@@ -410,14 +475,15 @@ function generarListadoUsuarios() {
 
         
         <td id="id" >${item.id}</td>
-        <td><input id="${item.id}" type="checkBox" checked="${item.admin}" disabled></input></td>
+       
+        <td><input id="${item.id}" type="checkBox" ${checked} disabled  ></td>
         <td><input id="${item.id}" type="text" disabled value=${item.name}></td> 
         <td><input id="${item.id}" type="text" disabled value=${item.lastName}></td>
         <td><input id="${item.id}" type="text" disabled value=${item.user}></td>
          
         `;
-            
-            
+
+
             userTable.appendChild(fila);
 
 
