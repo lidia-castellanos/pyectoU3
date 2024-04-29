@@ -2,14 +2,53 @@ const carrito = [];
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    
+
+    const usuarios = [{ id: 100, user: "lidia.castellanos", name: "LIDIA", lastName: "CASTELLANOS", password: "12345", admin: true }];
+
+    const memoriaUsuarios = localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+    const activo = JSON.parse(localStorage.getItem("uActivo"));
+
+    const uActivoNombre = document.getElementById("uActivo");
+
     const memoria = JSON.parse(localStorage.getItem("usuarios"));
 
-    const usuarios = [{ id: 100, user: "lidia.castellanos", name: "LIDIA", lastName: "CASTELLANOS", password: "12345",admin:true }];
+    const loginIcono = document.getElementById("login");
+    const liga = document.getElementById("loginRef");
+    const hrefUactivo = document.getElementById("hrefUactivo");
+
+    if (activo != null) {
+
+      
+
+        uActivoNombre.innerHTML = "Bienvenido(a), " + activo[0].name;
 
 
 
+        loginIcono.className = "fa-solid fa-power-off";
 
-    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+        liga.href = "javascript:logout()";
+        console.log(activo[0].admin);
+
+        if (activo[0].admin == true) {
+            hrefUactivo.href = "admin.html";
+            console.log("yesss");
+        }
+
+    }
+
+
+    else {
+
+       
+
+        liga.href = "login.html";
+        loginIcono.className = "fa-solid fa-user fa-xl fa-stack";
+
+    }
+
 
     cargarCatalogo();
 
@@ -27,7 +66,6 @@ function cargarCatalogo() {
         { id: 7, imagen: "https://images.pexels.com/photos/2788494/pexels-photo-2788494.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", precio: 9000, nombre: "Arco florar para evento" },
         { id: 8, imagen: "https://images.pexels.com/photos/3972697/pexels-photo-3972697.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", precio: 200, nombre: "Ramo de rosas sencillo" },
         { id: 9, imagen: "https://images.pexels.com/photos/1883380/pexels-photo-1883380.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", precio: 400, nombre: "Centro de mesa tulipanes" },
-        // Agrega más productos aquí
     ];
     localStorage.setItem("catalogo", JSON.stringify(catalogo));
     const catalogoContainer = document.getElementById("catalogo");
@@ -97,16 +135,16 @@ function cargarCatalogo() {
 
 
             subtotalTotal += item.producto.precio * item.cantidad;
-    
-    
+
+
         });
         console.log(carrito);
-    
-    
-    
+
+
+
         const botonComprar = document.getElementById("finalizarCompra");
-    
-    
+
+
         localStorage.setItem("compras", JSON.stringify(carrito));
     }
 
@@ -117,3 +155,10 @@ function cargarCatalogo() {
 
 }
 
+
+
+function logout() {
+    alert("Sesion terminada");
+    localStorage.removeItem("uActivo");
+    location.assign("index.html");
+}

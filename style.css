@@ -7,7 +7,11 @@ i {
     color: black;
 
 }
-
+#uActivo{
+    margin-top: auto;
+    margin-bottom: auto;
+    color: black;
+}
 .container h5 {
     margin-top: 10%;
     margin-left: auto;
@@ -15,25 +19,26 @@ i {
 }
 
 #btnCarrito {
-
+    width:auto;
 
     margin-left: auto;
     margin-right: auto;
-}
 
+   
+}
+#carritoVacio{
+    margin-left: auto;
+    margin-right: auto;
+}
 li {
     padding: 10px;
 }
 
 #logo {
     width: 12dvw;
-    height: 250px;
+    height: auto;
 }
 
-[data-quantity] button.add {
-    right: .6rem;
-    background-position-x: -2.8rem;
-}
 
 nav {
     height: 20dvh;
@@ -101,9 +106,12 @@ h1 {
 .listados table {
     width: 75dvw;
     height: 3%;
+    
+   
 
 
 }
+
 
 .catalogo {
     margin-top: 3%;

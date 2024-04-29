@@ -9,16 +9,34 @@ const div = document.createElement("div");
 const mensaje = document.createElement("div");
 
 
-
+window.addEventListener('beforeunload', function (e) {
+    
+});
 
 document.addEventListener("DOMContentLoaded", function () {
 
 
 
-    // generarListadoUsuarios();
+
     const memoria = JSON.parse(localStorage.getItem("usuarios"));
 
+    const uActivoNombre = document.getElementById("uActivo");
 
+    const activo = JSON.parse(localStorage.getItem("uActivo"));
+
+    uActivoNombre.innerHTML = "Bienvenido(a), " + activo[0].name;
+
+    const loginIcono = document.getElementById("login");
+    const liga = document.getElementById("loginRef");
+
+    loginIcono.className = "fa-solid fa-power-off";
+
+    
+
+    liga.href = "javascript:logout()";
+
+
+    
 
 
 
@@ -29,21 +47,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function generarListadoCatalogo() {
+    const divPadre = document.getElementById("listado");
+    
+
     const div = document.createElement("div");
+
+    
     div.id = "tablaCatalogo";
 
-    const divPadre = document.getElementById("listado");
+   
+
+  
+   
     const crearNuevo = document.getElementById("tablaCatalogo");
 
 
-    if (divPadre.contains(crearNuevo))
 
-        crearNuevo.remove();
 
-    if (!divPadre.contains(div)) {
-        div.innerHTML = `
+    div.innerHTML = `
         
-    <table class="table" id="usersTable">
+    <table class="table" id="catalogTable">
     
         <thead class="thead-dark">
         
@@ -58,14 +81,16 @@ function generarListadoCatalogo() {
         </thead>
     </table>
     `;
-        divPadre.appendChild(div);
-        const catalogTable = document.getElementById("usersTable");
-        memoriaCatalogo.forEach((item) => {
-            const fila = document.createElement("tbody");
-            fila.innerHTML = `
-        <td><a href="#"><i class="fa-solid fa-trash"  id="${item.id}" onclick="borrar()" ></i></a>
-        <a href="#"><i class="fa-solid fa-pencil"  onclick="editar()" id="${item.id}"></i></a>
-        <a href="#" ><i class="fa-solid fa-floppy-disk" id="${item.id}" onclick="guardar()" ></i> </a>
+    divPadre.appendChild(div);
+
+    const catalogTable = document.getElementById("catalogTable");
+
+    memoriaCatalogo.forEach((item) => {
+        const fila = document.createElement("tbody");
+        fila.innerHTML = `
+        <td><a href="#"><i class="fa-solid fa-trash"  id="${item.id}" onclick="borrarArticulo()" ></i></a>
+        <a href="#"><i class="fa-solid fa-pencil"  onclick="editarArticulo()" id="${item.id}"></i></a>
+        <a href="#" ><i class="fa-solid fa-floppy-disk" id="${item.id}" onclick="guardarArticulo()" ></i> </a>
         </td>
 
         
@@ -78,14 +103,14 @@ function generarListadoCatalogo() {
          
         `;
 
-            // fila.id = "filasTablas";
-            catalogTable.appendChild(fila);
+        fila.id = "filasTablas";
+        catalogTable.appendChild(fila);
 
 
-        });
+    });
 
-    }
 }
+
 
 
 function crearFormulario() {
@@ -96,14 +121,10 @@ function crearFormulario() {
     const tablaCatalogo = document.getElementById("tablaCatalogo");
 
 
-    if (divPadre.contains(tablaUsuarios))
-
-        tablaUsuarios.remove();
 
 
 
-    if (!divPadre.contains(document.getElementById("divsd"))) {
-        div.innerHTML = `
+    div.innerHTML = `
     <form id="formularioUser">
   <div class="form-row">
 
@@ -137,13 +158,13 @@ function crearFormulario() {
   <button type="submit" class="btn btn-primary" onClick="limpiar()">Nuevo</button>
 </form>
     `;
-        divPadre.appendChild(div);
-
-    }
-
-
+    divPadre.appendChild(div);
 
 }
+
+
+
+
 
 function crearFormularioArticulo() {
     div.id = "divsd";
@@ -153,14 +174,11 @@ function crearFormularioArticulo() {
     const tablaCatalogo = document.getElementById("tablaCatalogo");
 
 
-    if (divPadre.contains(tablaUsuarios))
-
-        tablaUsuarios.remove();
 
 
 
-    if (!divPadre.contains(document.getElementById("divsd"))) {
-        div.innerHTML = `
+
+    div.innerHTML = `
     <form id="formNuevoArt">
   <div class="form-row">
 
@@ -187,10 +205,10 @@ function crearFormularioArticulo() {
   <button type="submit" class="btn btn-primary" onClick="limpiar()">Nuevo</button>
 </form>
     `;
-        divPadre.appendChild(div);
-    }
-
+    divPadre.appendChild(div);
 }
+
+
 function limpiar() {
     mostrarMensajeFormUsuario("", "");
     lvladmin = document.getElementById("lvladmin");
@@ -301,12 +319,14 @@ function buscarIdIcono() {
 
     return numeroIcono;
 }
-function enableInput(id, condicion) {
+
+
+function enableInput(id, condicion, tabla) {
 
 
 
 
-    const table = document.getElementById("usersTable");
+    const table = document.getElementById(tabla);
 
     const fila = table.querySelectorAll("input");
 
@@ -324,7 +344,71 @@ function enableInput(id, condicion) {
     });
 
 }
+function enableInputCatalog(id, condicion) {
 
+
+
+
+    const table = document.getElementById("catalogTable");
+
+    const fila = table.querySelectorAll("input");
+
+
+
+
+    fila.forEach(element => {
+
+        if (element.id == id) {
+
+            element.disabled = condicion;
+
+        }
+
+    });
+
+}
+function guardarArticulo() {
+    let numeroIcono = buscarIdIcono();
+
+
+    let index = memoriaCatalogo.findIndex(element => element.id === numeroIcono);
+
+
+
+    const table = document.getElementById("catalogTable");
+
+    const fila = table.querySelectorAll("input");
+
+    const userValuesArray = [];
+
+
+
+    fila.forEach(element => {
+
+
+        if (element.id == numeroIcono) {
+
+            if (element.type === "checkbox")
+                userValuesArray.push(element.checked);
+
+            else
+                userValuesArray.push(element.value);
+
+
+        }
+
+
+    });
+    console.log(userValuesArray);
+    memoriaCatalogo[index].imagen = userValuesArray[0];
+    memoriaCatalogo[index].precio = parseInt(userValuesArray[1]);
+    memoriaCatalogo[index].nombre = userValuesArray[2];
+
+
+
+    enableInput(numeroIcono, true, "catalogTable");
+    localStorage.setItem("catalogo", JSON.stringify(memoriaCatalogo));
+}
 function guardar() {
 
     let numeroIcono = buscarIdIcono();
@@ -364,10 +448,23 @@ function guardar() {
     console.log(userValuesArray[1]);
 
 
-    enableInput(numeroIcono, true);
+    enableInput(numeroIcono, true, "usersTable");
     localStorage.setItem("usuarios", JSON.stringify(memoriaUsuarios));
 
 
+
+
+}
+
+function editarArticulo() {
+
+
+
+    let numeroIcono = buscarIdIcono();
+
+
+
+    enableInput(numeroIcono, false, "catalogTable");
 
 
 }
@@ -379,11 +476,33 @@ function editar() {
 
 
 
-    enableInput(numeroIcono, false);
+    enableInput(numeroIcono, false, "usersTable");
 
 
 }
+function borrarArticulo() {
+    const divPadre = document.getElementById("mensajes");
 
+    let numeroIcono = buscarIdIcono();
+
+
+
+    let newMemoria = JSON.parse(localStorage.getItem("catalogo"));
+
+
+
+    let index = newMemoria.findIndex(element => element.id === numeroIcono);
+
+    memoriaCatalogo.splice(index, 1);
+
+    mostrarMensajeFormUsuario("alert alert-success", "Articulo eliminado");
+    divPadre.appendChild(mensaje);
+
+    localStorage.setItem("catalogo", JSON.stringify(memoriaCatalogo));
+
+
+
+}
 
 function borrar() {
     const divPadre = document.getElementById("mensajes");
@@ -418,7 +537,7 @@ function borrar() {
 
 
 
-    // generarListadoUsuarios();
+    generarListadoUsuarios();
 
 
 }
@@ -432,12 +551,10 @@ function generarListadoUsuarios() {
     const crearNuevo = document.getElementById("divsd");
 
 
-    if (divPadre.contains(crearNuevo))
 
-        crearNuevo.remove();
 
-    if (!divPadre.contains(document.getElementById("tablaUsuarios"))) {
-        div.innerHTML = `
+
+    div.innerHTML = `
     
     <table class="table" id="usersTable">
         <thead class="thead-dark">
@@ -452,22 +569,22 @@ function generarListadoUsuarios() {
         </thead>
     </table>
     `;
-        divPadre.appendChild(div);
+    divPadre.appendChild(div);
 
-        const userTable = document.getElementById("usersTable");
-        const checkbox = userTable.querySelectorAll("input");
-        memoriaUsuarios.forEach((item) => {
-            let checked = "";
-
-
-            if (item.admin == true) {
-                checked = "checked";
-                contadorAdmins++;
-            }
+    const userTable = document.getElementById("usersTable");
+    const checkbox = userTable.querySelectorAll("input");
+    memoriaUsuarios.forEach((item) => {
+        let checked = "";
 
 
-            const fila = document.createElement("tbody");
-            fila.innerHTML = `
+        if (item.admin == true) {
+            checked = "checked";
+            contadorAdmins++;
+        }
+
+
+        const fila = document.createElement("tbody");
+        fila.innerHTML = `
         <td><a href="#"><i class="fa-solid fa-trash"  id="${item.id}" onclick="borrar()" ></i></a>
         <a href="#"><i class="fa-solid fa-pencil"  onclick="editar()" id="${item.id}"></i></a>
         <a href="#" ><i class="fa-solid fa-floppy-disk" id="${item.id}" onclick="guardar()" ></i> </a>
@@ -484,10 +601,16 @@ function generarListadoUsuarios() {
         `;
 
 
-            userTable.appendChild(fila);
+        userTable.appendChild(fila);
 
 
-        });
+    });
 
-    }
+}
+
+
+function logout() {
+    alert("Sesion terminada");
+    localStorage.removeItem("uActivo");
+    location.assign("index.html");
 }
